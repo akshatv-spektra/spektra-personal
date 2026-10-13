@@ -42,8 +42,8 @@ Two virtual machines have been provisioned for you.
 
 | | |
 |---|---|
-| Username | `{{AdminUsername}}` |
-| Password | `{{AdminPassword}}` |
+| Username | <inject key="adminUsername" enableCopy="false"/> |
+| Password | <inject key="adminPassword" enableCopy="false"/> |
 
 **Falcon and TENEX details** (also in your lab details panel):
 
