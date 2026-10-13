@@ -18,23 +18,16 @@ off the network so an attacker cannot spread any further, prove the isolation
 actually worked, and then release the machine and close the case.
 
 ---
-
-<inject key="falconApiBaseUrl" enableCopy="false"/>
-
-<inject key="adminUsername" enableCopy="false"/>
-
-<inject key="endpointPublicIp" enableCopy="false"/>
-
 ## Your lab environment
 
 Two virtual machines have been provisioned for you.
 
 | | Analyst VM | Endpoint VM |
 |---|---|---|
-| **Hostname** | `<inject key="AnalystHostname"></inject>` | `<inject key="EndpointHostname"></inject>` |
-| **Connect to (RDP)** | `{{AnalystRdpAddress}}` | `{{EndpointRdpAddress}}` |
-| **Public IP** | `{{AnalystPublicIp}}` | `{{EndpointPublicIp}}` |
-| **Private IP** | 10.0.1.20 | `{{EndpointPrivateIp}}` |
+| **Hostname** | <inject key="AnalystHostname"></inject> | <inject key="EndpointHostname"></inject> |
+| **Connect to (RDP)** | <inject key="analystRdpAddress"></inject> | <inject key="endpointRdpAddress"></inject> |
+| **Public IP** | <inject key="analystPublicIp"></inject> | <inject key="endpointPublicIp"></inject> |
+| **Private IP** | 10.0.1.20 | <inject key="endpointPrivateIp"></inject> |
 | **Falcon sensor** | No | Yes |
 | **Your role here** | This is your desk | This is the machine under attack |
 
@@ -49,12 +42,12 @@ Two virtual machines have been provisioned for you.
 
 | | |
 |---|---|
-| Falcon console | `{{FalconConsoleUrl}}` |
-| Falcon console username | `{{FalconConsoleUsername}}` |
-| Falcon console password | `{{FalconConsolePassword}}` |
-| API client ID | `{{FalconClientId}}` |
-| API client secret | `{{FalconClientSecret}}` |
-| API base URL | `{{FalconApiBaseUrl}}` |
+| Falcon console | <inject key="falconConsoleUrl" enableCopy="false"/> |
+| Falcon console username | <inject key="falconLoginEmail" enableCopy="false"/> |
+| Falcon console password | <inject key="falconLoginPassword" enableCopy="false"/> |
+| API client ID | <inject key="falconClientId" enableCopy="false"/> |
+| API client secret | <inject key="falconSecret" enableCopy="false"/> |
+| API base URL | <inject key="falconApiBaseUrl" enableCopy="false"/> |
 
 ### Why there are two machines
 
@@ -77,7 +70,7 @@ compromised machine by logging into the compromised machine.
 
 ## Before you begin
 
-1. Connect to the **Analyst VM** at `{{AnalystRdpAddress}}` using the
+1. Connect to the **Analyst VM** at <inject key="analystRdpAddress" enableCopy="false"/> using the
    credentials above.
 2. On the desktop you will find **START-HERE.txt**, plus shortcuts to the
    Falcon console and the TENEX platform.
@@ -96,7 +89,7 @@ reporting to the Falcon cloud.
 ### Steps
 
 1. On the **Analyst VM**, open the **Falcon Console** desktop shortcut (or
-   browse to `{{FalconConsoleUrl}}`).
+   browse to <inject key="falconConsoleUrl" enableCopy="false"/>).
 
 2. Sign in with the Falcon console credentials from your lab details panel.
    You may be prompted to complete multi-factor authentication.
@@ -105,7 +98,7 @@ reporting to the Falcon cloud.
    management**. (CrowdStrike occasionally reorganises these menus. If the path
    looks different, use the console's search and look for *Host management*.)
 
-4. In the host list, find your endpoint: **`{{EndpointHostname}}`**.
+4. In the host list, find your endpoint: **<inject key="endpointHostname" enableCopy="false"/>**.
    Use the search or filter box — on a shared lab tenant there may be hosts
    belonging to other participants, so match the hostname exactly.
 
@@ -147,9 +140,9 @@ through its REST API — no agent, no extra software on your machines.
 ### Steps
 
 1. From your lab details panel, copy these three values:
-   - **API client ID** — `{{FalconClientId}}`
-   - **API client secret** — `{{FalconClientSecret}}`
-   - **API base URL** — `{{FalconApiBaseUrl}}`
+   - **API client ID** — <inject key="falconClientId" enableCopy="false"/>
+   - **API client secret** — <inject key="falconSecret" enableCopy="false"/>
+   - **API base URL** — <inject key="falconApiBaseUrl" enableCopy="false"/>
 
 2. On the **Analyst VM**, open the **TENEX Platform** desktop shortcut.
 
@@ -195,7 +188,7 @@ This is the one exercise performed on the **Endpoint VM**.
 
 ### Steps
 
-1. Connect to the **Endpoint VM** at `{{EndpointRdpAddress}}` using the same
+1. Connect to the **Endpoint VM** at <inject key="endpointRdpAddress" enableCopy="false"/> using the same
    credentials. (Keep your Analyst VM session open — you are coming straight
    back to it.)
 
@@ -274,7 +267,7 @@ and what actually happened?
    labelled *Alerts* or *Activity → Detections*.)
 
 2. Confirm you can see your three new detections. Filter by hostname
-   **`{{EndpointHostname}}`** so you are looking only at your own machine.
+   **<inject key="endpointHostname" enableCopy="false"/>** so you are looking only at your own machine.
 
 3. Sort or filter by severity and open the **Critical** detection.
 
@@ -345,7 +338,7 @@ Before containing anything, prove the network path works.
 On the **Analyst VM**, open a Command Prompt and run:
 
 ```
-ping {{EndpointPrivateIp}}
+ping <inject key="endpointPrivateIp" enableCopy="false"/>
 ```
 
 You should get replies. **Do not skip this** — without a working baseline, a
@@ -355,7 +348,7 @@ failed ping later proves nothing.
 
 Either from the Falcon console:
 
-1. Go to **Host management** and find `{{EndpointHostname}}`.
+1. Go to **Host management** and find <inject key="endpointHostname" enableCopy="false"/>.
 2. Open the host's actions menu and choose **Network contain**.
 3. Confirm the action.
 
@@ -366,13 +359,13 @@ The result is identical — TENEX is calling the same API the console uses.
 
 Two independent checks:
 
-1. **In the console**, the host status for `{{EndpointHostname}}` now reads
+1. **In the console**, the host status for <inject key="endpointHostname" enableCopy="false"/> now reads
    **Contained**.
 
 2. **From the Analyst VM**, run the ping again:
 
    ```
-   ping {{EndpointPrivateIp}}
+   ping <inject key="endpointPrivateIp" enableCopy="false"/>
    ```
 
    It should now **time out**.
@@ -382,12 +375,12 @@ Two independent checks:
 
 ### Step 4: Lift containment
 
-1. In the console, select `{{EndpointHostname}}` again.
+1. In the console, select <inject key="endpointHostname" enableCopy="false"/> again.
 2. Choose **Lift containment** and confirm.
 3. Wait up to a minute, then ping once more:
 
    ```
-   ping {{EndpointPrivateIp}}
+   ping <inject key="endpointPrivateIp" enableCopy="false"/>
    ```
 
    Replies should return. RDP to the endpoint works again too.
@@ -425,7 +418,7 @@ record is closed and the environment is back to a known state.
 ### Steps
 
 1. In the Falcon console, open your three detections for
-   **`{{EndpointHostname}}`**.
+   **<inject key="endpointHostname" enableCopy="false"/>**.
 
 2. For each one, set the status to **Closed** and add a brief comment, for
    example *"Lab test detection — verified benign, no action required."*
@@ -459,8 +452,8 @@ starts clean.
 |---|---|
 | Endpoint not listed in Host management | Wait 2–3 minutes after provisioning and refresh. The sensor registers shortly after first boot. |
 | Test commands produce no detections | Confirm you opened Command Prompt **as Administrator**, and that you are on the Endpoint VM, not the Analyst VM. Allow a minute for the detection to reach the console. |
-| Many hosts listed, cannot find mine | This is a shared tenant. Filter by the exact hostname `{{EndpointHostname}}` from your lab details panel. |
-| Ping fails before you contain anything | Confirm you are pinging `{{EndpointPrivateIp}}` (the private IP) from the **Analyst VM**, not the public address. |
+| Many hosts listed, cannot find mine | This is a shared tenant. Filter by the exact hostname <inject key="endpointHostname" enableCopy="false"/> from your lab details panel. |
+| Ping fails before you contain anything | Confirm you are pinging <inject key="endpointPrivateIp" enableCopy="false"/> (the private IP) from the **Analyst VM**, not the public address. |
 | Ping still succeeds after containment | Give it up to 60 seconds; the instruction has to reach the sensor. Then confirm the console shows the host as *Contained*. |
 | "Network contain" option is not available | Your console account may not hold a role that permits containment. Raise it with your lab instructor. |
 | RDP to the endpoint stopped working | Expected if the host is contained. Lift containment and it returns. |
