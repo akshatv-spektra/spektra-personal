@@ -1,10 +1,10 @@
 [
     {
-        "Name": "RTIAD - Real-Time Intelligence in a Day Workshop",
-        "Language": "Simplified Chinese",
+        "Name": "TenexAi",
+        "Language": "Englist",
         "Files": [
             {
-                "RawFilePath": "https://docs-api.cloudlabs.ai/repos/raw.githubusercontent.com/CloudLabsAI-Azure/RTIAD-Workshop/refs/heads/July-2026/Chinese/Labguide/Lab-1---July-2026.md",
+                "RawFilePath": "https://raw.githubusercontent.com/akshatv-spektra/spektra-personal/refs/heads/main/tenex.md",
                 "Order": 1
             }
         ]
