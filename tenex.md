@@ -89,7 +89,7 @@ reporting to the Falcon cloud.
 ### Steps
 
 1. On the **Analyst VM**, open the **Falcon Console** desktop shortcut (or
-   browse to <inject key="falconConsoleUrl" enableCopy="false"/>).
+   browse to **<inject key="falconConsoleUrl" enableCopy="false"/>**).
 
 2. Sign in with the Falcon console credentials from your lab details panel.
    You may be prompted to complete multi-factor authentication.
@@ -102,7 +102,7 @@ reporting to the Falcon cloud.
    Use the search or filter box — on a shared lab tenant there may be hosts
    belonging to other participants, so match the hostname exactly.
 
-5. Click the hostname to open the host details panel, and note:
+6. Click the hostname to open the host details panel, and note:
    - **Status** — should be *Online* or *Normal*
    - **Sensor version** — the version of the Falcon agent installed
    - **OS version** — Windows Server 2022
