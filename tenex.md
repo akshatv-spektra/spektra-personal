@@ -24,10 +24,10 @@ Two virtual machines have been provisioned for you.
 
 | | Analyst VM | Endpoint VM |
 |---|---|---|
-| **Hostname** | <inject key="AnalystHostname"></inject> | <inject key="EndpointHostname"></inject> |
-| **Connect to (RDP)** | <inject key="analystRdpAddress"></inject> | <inject key="endpointRdpAddress"></inject> |
-| **Public IP** | <inject key="analystPublicIp"></inject> | <inject key="endpointPublicIp"></inject> |
-| **Private IP** | 10.0.1.20 | <inject key="endpointPrivateIp"></inject> |
+| **Hostname** | <inject key="AnalystHostname" enableCopy="false"></inject> | <inject key="EndpointHostname" enableCopy="false"></inject> |
+| **Connect to (RDP)** | <inject key="analystRdpAddress" enableCopy="false"></inject> | <inject key="endpointRdpAddress" enableCopy="false"></inject> |
+| **Public IP** | <inject key="analystPublicIp" enableCopy="false"></inject> | <inject key="endpointPublicIp" enableCopy="false"></inject> |
+| **Private IP** | 10.0.1.20 | <inject key="endpointPrivateIp" enableCopy="false"></inject> |
 | **Falcon sensor** | No | Yes |
 | **Your role here** | This is your desk | This is the machine under attack |
 
