@@ -19,6 +19,12 @@ actually worked, and then release the machine and close the case.
 
 ---
 
+<inject key="falconApiBaseUrl" enableCopy="false"/>
+
+<inject key="adminUsername" enableCopy="false"/>
+
+<inject key="endpointPublicIp" enableCopy="false"/>
+
 ## Your lab environment
 
 Two virtual machines have been provisioned for you.
