@@ -70,7 +70,7 @@ compromised machine by logging into the compromised machine.
 
 ## Before you begin
 
-1. Connect to the **Analyst VM** at <inject key="analystRdpAddress" enableCopy="false"/> using the
+1. Connect to the **Analyst VM** at **<inject key="analystRdpAddress" enableCopy="false"/>** using the
    credentials above.
 2. On the desktop you will find **START-HERE.txt**, plus shortcuts to the
    Falcon console and the TENEX platform.
