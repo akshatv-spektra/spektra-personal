@@ -4,6 +4,10 @@
         "Language": "Englist",
         "Files": [
             {
+                "RawFilePath": "https://raw.githubusercontent.com/akshatv-spektra/spektra-personal/refs/heads/main/get-start.md",
+                "Order": 1
+            },
+            {
                 "RawFilePath": "https://raw.githubusercontent.com/akshatv-spektra/spektra-personal/refs/heads/main/tenex-guide2.md",
                 "Order": 1
             }
