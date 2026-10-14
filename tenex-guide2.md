@@ -65,6 +65,8 @@ console, TENEX, the connectivity tests — happens from the Analyst VM.
 This also happens to be how real security teams operate. Nobody investigates a
 compromised machine by logging into the compromised machine.
 
+<question source="https://raw.githubusercontent.com/akshatv-spektra/spektra-personal/refs/heads/main/questions/question-01.md" />
+
 ---
 
 ## Exercise 1: Confirm the endpoint is protected
@@ -255,6 +257,10 @@ any real malware on the machine.
 
    ![Screenshot: Command prompt showing the expected "not recognized" response](images/2q.png)
 
+<question source="https://raw.githubusercontent.com/akshatv-spektra/spektra-personal/refs/heads/main/questions/question-02.md" />
+
+<question source="https://raw.githubusercontent.com/akshatv-spektra/spektra-personal/refs/heads/main/questions/question-05.md" />
+
 ---
 
 ## Exercise 4: Investigate the critical detection
@@ -300,6 +306,8 @@ and what actually happened?
 1. **Find the host details.** Confirm the hostname matches your endpoint, and note the user account the process ran under, the OS, and the timestamp.
 
     ![Screenshot: Host details within the detection](images/3w.png)
+
+<question source="https://raw.githubusercontent.com/akshatv-spektra/spektra-personal/refs/heads/main/questions/question-04.md" />
 
 ## Exercise 5: Respond - contain the host
 
@@ -373,6 +381,13 @@ Two independent checks:
 
    > If you still had a Remote Desktop session open to the Endpoint VM, it has now dropped. That is containment working as designed, not a lab failure.
 
+> **Congratulations** on completing the task! Now, it's time to validate it. Here are the steps:
+> - Hit the Validate button for the corresponding task. If you receive a success message, you can proceed to the next task.
+> - If not, carefully read the error message and retry the step, following the instructions in the lab guide.
+> - If you need any assistance, please contact us at labs-support@spektrasystems.com. We are available 24/7 to help you out.
+
+<validation step="45cd6313-51c3-4d13-9123-b46c1c0d921f" />
+
 ### Task 4: Lift containment
 
 1. In the Falcon console, select your endpoint again.
@@ -391,6 +406,15 @@ Two independent checks:
     ![Screenshot: Lift network containment menu option](images/4y.png)
 
 1. Press **Ctrl + C** in the Command Prompt to stop the continuous ping.
+
+<question source="https://raw.githubusercontent.com/akshatv-spektra/spektra-personal/refs/heads/main/questions/question-03.md" />
+
+> **Congratulations** on completing the task! Now, it's time to validate it. Here are the steps:
+> - Hit the Validate button for the corresponding task. If you receive a success message, you can proceed to the next task.
+> - If not, carefully read the error message and retry the step, following the instructions in the lab guide.
+> - If you need any assistance, please contact us at labs-support@spektrasystems.com. We are available 24/7 to help you out.
+
+<validation step="0000ac7f-1e23-484e-accb-0a76c03e8cee" />
 
 ---
 
