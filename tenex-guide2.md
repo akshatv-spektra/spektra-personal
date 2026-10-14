@@ -504,7 +504,7 @@ record is closed and the environment is back to a known state.
 
 1. Filter by **Hostname** using your endpoint: <inject key="EndpointHostname" enableCopy="true"/>
 
-1. Select yours detections and click on **Edit Status**.
+1. Select your detections and click on **Edit Status**.
 
    ![Screenshot: Three detections selected](images/5q.png)
 
