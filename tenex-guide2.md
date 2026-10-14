@@ -1,7 +1,5 @@
 # Detect, Investigate and Contain a Threat with CrowdStrike Falcon and TENEX.AI
 
-**Duration:** approximately 60 minutes
-
 ## Scenario
 
 You are a security analyst. Somewhere in your estate is a Windows machine that
@@ -109,8 +107,6 @@ compromised machine by logging into the compromised machine.
 
 ## Exercise 1: Confirm the endpoint is protected
 
-**Time:** 10 minutes
-
 You cannot respond to an incident on a machine you are not monitoring. Before
 anything else, confirm the sensor on your endpoint is installed, online and
 reporting to the Falcon cloud.
@@ -118,77 +114,62 @@ reporting to the Falcon cloud.
 ### Task 1: Sign in to the Falcon console
 
 1. On the **Analyst VM**, double-click the **Falcon Console** shortcut on the
-   desktop. Microsoft Edge opens at <inject key="falconConsoleUrl" enableCopy="true"/>.
+   desktop or open **<inject key="falconConsoleUrl" enableCopy="true"/>** URL on the browser.
 
-2. Enter the Falcon console username and click **Log In**:
+   ![](images/5.png)
 
-   <inject key="falconLoginEmail" enableCopy="true"/>
+1. Enter the Falcon console username **<inject key="falconLoginEmail" enableCopy="true"/>** and click **Continue**:
 
-   ![Screenshot: Falcon console sign-in page](images/ex1-01-login-email.png)
+   ![Screenshot: Falcon console sign-in page](images/6.png)
 
-3. Enter the password and click **Log In**:
+1. Enter the password **<inject key="falconLoginPassword" enableCopy="true"/>** and click **Continue**:
 
-   <inject key="falconLoginPassword" enableCopy="true"/>
+   ![Screenshot: Falcon console sign-in page](images/7.png)
 
-4. If you are prompted for multi-factor authentication, complete it using the
-   method shown on screen.
+1. The Falcon console opens on the **Main view** dashboard.
 
-5. The Falcon console opens on the **Main view** dashboard.
-
-   ![Screenshot: Falcon console Main view](images/ex1-02-main-view.png)
+   ![Screenshot: Falcon console Main view](images/8.png)
 
 ### Task 2: Find your endpoint
 
-6. In the left navigation menu, click **Host setup and management**.
+1. In the left navigation menu, click **Host setup and management (1)** and select **Host management (2)**.
 
-   ![Screenshot: Left navigation with Host setup and management highlighted](images/ex1-03-nav-host-setup.png)
+   ![Screenshot: Left navigation with Host setup and management highlighted](images/1.png)
 
-7. In the flyout menu that opens, click **Host management**.
+1. The host list opens, showing every machine reporting into this Falcon tenant.
 
-   ![Screenshot: Host setup and management flyout menu](images/ex1-04-host-management-menu.png)
+   > This is a shared lab tenant, so you may see hosts belonging to other participants. Always work with your own hostname, which is shown in your lab details panel.
 
-8. The host list opens, showing every machine reporting into this Falcon
-   tenant.
+1. You will see the your endpoint.
 
-   > This is a shared lab tenant, so you may see hosts belonging to other
-   > participants. Always work with your own hostname, which is shown in your
-   > lab details panel.
+   ![Screenshot: Host list filtered to the lab endpoint](images/2.png)
 
-9. In the search or filter box above the host list, type your endpoint
-   hostname and press **Enter**:
+   >**Note:** In the search all fields box above the host list, your can enter your endpoint hostname and press Enter to search your Host: <inject key="EndpointHostname" enableCopy="true"/>
 
-   <inject key="EndpointHostname" enableCopy="true"/>
-
-   ![Screenshot: Host list filtered to the lab endpoint](images/ex1-05-host-filtered.png)
-
-10. Click the hostname to open the host details.
+1. Click the hostname to open the host details.
 
 ### Task 3: Verify the sensor is healthy
 
-11. In the host details panel, confirm each of the following:
+1. In the host details panel, confirm each of the following:
 
     | Field | What you should see |
     |---|---|
-    | **Status** | Online or Normal |
-    | **Sensor version** | A version number, e.g. 7.x.x |
-    | **OS version** | Windows Server 2022 |
+    | **Host ID** | A unique identifier for this sensor install |
     | **Last seen** | Within the last few minutes |
-    | **Agent ID (AID)** | A unique identifier for this sensor install |
+    | **OS version** | Windows Server 2022 |
+    | **Sensor version** | A version number, e.g. 8.10.x |
 
-    ![Screenshot: Host details panel showing sensor version and status](images/ex1-06-host-details.png)
+    ![Screenshot: Host details panel showing sensor version and status](images/3.png)
 
-12. Note the **Agent ID**. Every machine that installs the sensor generates its
+1. Note the **Host ID**. Every machine that installs the sensor generates its
     own, which is how Falcon tells your endpoint apart from everyone else's.
 
 ### Expected result
 
-Your endpoint appears in Host management as online, with a sensor version and a
+Your endpoint appears in Host management, with a sensor version and a
 recent "last seen" timestamp.
 
-> **If the host is not listed**, wait two or three minutes and refresh. The
-> sensor registers shortly after the VM finishes provisioning, and the lab may
-> have handed you the guide before that completed. If it is still missing after
-> five minutes, raise it with your lab instructor.
+> **If the host is not listed or details are not populated**, wait two or three minutes and refresh. The sensor registers shortly after the VM finishes provisioning.
 
 ### What just happened
 
@@ -204,8 +185,6 @@ direction is what makes Exercise 5 possible.
 ---
 
 ## Exercise 2: Connect the TENEX integration
-
-**Time:** 5 minutes
 
 A real security team does not live in one console. Alerts from CrowdStrike flow
 into whatever platform the team actually works in. TENEX connects to Falcon
@@ -224,22 +203,22 @@ through its REST API — no agent, nothing installed on your machines.
 
 ### Task 2: Add the CrowdStrike connection in TENEX
 
-2. On the **Analyst VM**, double-click the **TENEX Platform** desktop shortcut.
+1. On the **Analyst VM**, double-click the **TENEX Platform** desktop shortcut.
 
-   ![Screenshot: TENEX platform sign-in](images/ex2-01-tenex-login.png)
+   ![Screenshot: TENEX platform sign-in](images/4.png)
 
-3. Sign in with the TENEX credentials provided to you.
+1. Sign in with the TENEX credentials provided to you.
 
-4. Navigate to the integrations area and choose to add a new **CrowdStrike
+1. Navigate to the integrations area and choose to add a new **CrowdStrike
    Falcon** connection.
 
    ![Screenshot: TENEX integrations page](images/ex2-02-add-integration.png)
 
-5. Paste in the three values from Task 1 and save the connection.
+1. Paste in the three values from Task 1 and save the connection.
 
    ![Screenshot: CrowdStrike connection configuration in TENEX](images/ex2-03-connection-config.png)
 
-6. Confirm the connection reports as healthy and that TENEX can see your host,
+1. Confirm the connection reports as healthy and that TENEX can see your host,
    <inject key="EndpointHostname" enableCopy="true"/>.
 
    ![Screenshot: Healthy CrowdStrike connection in TENEX](images/ex2-04-connection-healthy.png)
@@ -272,8 +251,6 @@ acts on it.
 ---
 
 ## Exercise 3: Generate detections
-
-**Time:** 10 minutes
 
 Now you need something to investigate. CrowdStrike provides built-in test
 commands that produce genuine detections at chosen severities, without putting
