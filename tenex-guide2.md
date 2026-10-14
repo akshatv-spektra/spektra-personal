@@ -260,40 +260,45 @@ any real malware on the machine.
 
 ### Task 1: Connect to the Endpoint VM
 
-1. Leave your Analyst VM session open. Open a **second** Remote Desktop
-   Connection — on your own computer press **Windows + R**, type `mstsc`,
-   press **Enter**.
+1. In your Analyst VM, search for **RDP (1)** and open **Remote Desktop Connection (2)** from the results.
 
-2. Connect to the Endpoint VM:
+   ![Screenshot: Endpoint VM desktop](images/9.png)
 
-   <inject key="endpointRdpAddress" enableCopy="true"/>
+1. Enter the **Endpoint VM’s** IP address, <inject key="endpointPrivateIp" enableCopy="true"/>, in the Computer field, then click **Connect**.
 
-3. Sign in with the same credentials:
+   ![Screenshot: Endpoint VM desktop](images/1a.png)
+
+1. Enter the credentials in the respective fields, then click **OK** to connect:
 
    - **User name:** <inject key="adminUsername" enableCopy="true"/>
    - **Password:** <inject key="adminPassword" enableCopy="true"/>
 
-4. On the desktop you will find **Exercise-3-Test-Commands.txt** containing the
+   ![Screenshot: Endpoint VM desktop](images/1b.png)
+
+1. A security certificate warning will appear. Click **Yes** to continue connecting to the Endpoint VM.
+
+   ![Screenshot: Endpoint VM desktop](images/1d.png)
+
+1. On the desktop you will find **Exercise-3-Test-Commands.txt** containing the
    commands below, in case you prefer to copy them from there.
 
-   ![Screenshot: Endpoint VM desktop](images/ex3-01-endpoint-desktop.png)
+   ![Screenshot: Endpoint VM desktop](images/1c.png)
 
 ### Task 2: Run the test commands
 
-5. Right-click the **Start** button and select **Terminal (Admin)** — or
-   **Command Prompt (Admin)**, depending on the build.
+1. Right-click the **Start (1)** button and select **Windows PowerShell (Admin) (2)**.
 
-   ![Screenshot: Start menu right-click showing Terminal (Admin)](images/ex3-02-admin-terminal.png)
+   ![Screenshot: Start menu right-click showing Terminal (Admin)](images/1e.png)
 
-6. If a User Account Control prompt appears, click **Yes**.
+1. If a User Account Control prompt appears, click **Yes**.
 
-7. Type the following command and press **Enter**:
+1. Type the following command and press **Enter**:
 
    ```
    crowdstrike_test_critical
    ```
 
-8. You will see this response:
+1. You will see this response:
 
    ```
    'crowdstrike_test_critical' is not recognized as an internal or external
@@ -302,45 +307,45 @@ any real malware on the machine.
 
    **This is expected and is not a failure.** Continue to the next command.
 
-   ![Screenshot: Command prompt showing the expected "not recognized" response](images/ex3-03-test-critical.png)
+   ![Screenshot: Command prompt showing the expected "not recognized" response](images/1f.png)
 
-9. Run the second command and press **Enter**:
+1. Run the second command and press **Enter**:
 
    ```
    crowdstrike_test_high
    ```
 
-10. Run the third command and press **Enter**:
+1. Run the third command and press **Enter**:
 
     ```
     crowdstrike_test_low
     ```
 
-    ![Screenshot: All three test commands executed](images/ex3-04-all-three-commands.png)
+    ![Screenshot: All three test commands executed](images/1g.png)
 
-### Task 3 (optional): See prevention in action
+### Task 3: See prevention in action
 
-11. For a visible on-screen reaction, open **PowerShell** and run:
+1. For a visible on-screen reaction, open **PowerShell** and run:
 
     ```
     svchost.exe -testisatest
     ```
 
-12. This command behaves differently — Falcon actively blocks it, terminates
+1. This command behaves differently - Falcon actively blocks it, terminates
     the PowerShell process, and displays a notification on screen.
 
-    ![Screenshot: Falcon prevention notification on the endpoint](images/ex3-05-prevention-popup.png)
+    ![Screenshot: Falcon prevention notification on the endpoint](images/1h.png)
 
-### Task 4: Return to the Analyst VM
+1. Close the Remote Desktop session to the **Endpoint VM**.
 
-13. Close the Remote Desktop session to the Endpoint VM.
+   ![Screenshot: Command prompt showing the expected "not recognized" response](images/1q.png)
 
-14. Switch back to your **Analyst VM** session for the rest of the lab.
+   ![Screenshot: Command prompt showing the expected "not recognized" response](images/2q.png)
 
 ### Expected result
 
 Nothing visible happened on the endpoint for the first three commands, but
-three new detections now exist in the Falcon console — one Critical, one High
+three new detections now exist in the Falcon console - one Critical, one High
 and one Low.
 
 ### What just happened
@@ -351,7 +356,7 @@ these reserved strings as CrowdStrike's built-in test triggers, and raised a
 detection at the matching severity in the cloud. The entire effect happened
 server-side.
 
-The optional PowerShell command is different in kind: that one demonstrates
+The last PowerShell command is different in kind: that one demonstrates
 *prevention* — Falcon terminating a process rather than merely recording it.
 
 **Why three different severities?** Because that is the problem real security
@@ -365,106 +370,51 @@ analyst faces every morning.
 
 ## Exercise 4: Investigate the critical detection
 
-**Time:** 15 minutes
-
 Three alerts have arrived. An analyst's first job is triage: which one matters,
 and what actually happened?
 
 ### Task 1: Open the detections list
 
-1. On the **Analyst VM**, in the Falcon console, click **Endpoint security** in
-   the left navigation menu.
+1. On the **Analyst VM**, in the Falcon console, click the **Main menu (1)** icon at the top-left, click **Endpoint security (2)** in the left navigation menu, then under the **Monitor** section of the flyout, click **Endpoint detections (3)**.
 
-   ![Screenshot: Left navigation with Endpoint security highlighted](images/ex4-01-nav-endpoint-security.png)
+   ![Screenshot: Left navigation with Endpoint security highlighted](images/1r.png)
 
-2. Under the **Monitor** section of the flyout, click **Endpoint detections**.
+1. The detections list opens.
 
-   ![Screenshot: Endpoint security flyout showing Endpoint detections](images/ex4-02-endpoint-detections-menu.png)
+1. Filter the list to your own machine. In the filter bar, filter by ****<inject key="EndpointHostname" enableCopy="true"/>**** and press enter:
 
-3. The detections list opens.
+   ![Screenshot: Detections filtered to the lab endpoint](images/1t.png)
 
-4. Filter the list to your own machine. In the filter bar, filter by **Hostname**
-   and enter:
-
-   <inject key="EndpointHostname" enableCopy="true"/>
-
-   ![Screenshot: Detections filtered to the lab endpoint](images/ex4-03-detections-filtered.png)
-
-5. Confirm you can see your three detections, with severities **Critical**,
-   **High** and **Low**.
+1. Confirm you can see your three detections, with severities **Critical**, **High** and **Low**.
 
    > If only some have appeared, wait a minute and refresh. Detections take a
    > short time to travel from the sensor to the console.
 
 ### Task 2: Open the critical detection
 
-6. Click the detection with severity **Critical** to open its details.
+1. Click any detection to open its details.
 
-   ![Screenshot: Critical detection summary](images/ex4-04-critical-detection.png)
+   ![Screenshot: Critical detection summary](images/2w.png)
 
 ### Task 3: Walk the evidence
 
-7. **Find the process tree.** This is the visual chain showing what launched
-   what. You should be able to read it top to bottom, along these lines:
+1. **Find the process tree.** This is the visual chain showing what launched what. You should be able to read it top to bottom, along these lines:
 
    ```
    explorer.exe  ->  cmd.exe  ->  crowdstrike_test_critical
    ```
 
-   ![Screenshot: Process tree for the critical detection](images/ex4-05-process-tree.png)
+   ![Screenshot: Process tree for the critical detection](images/2e.png)
 
-8. **Click each process in the tree** and look at the details shown for it.
+   ![Screenshot: Process tree for the critical detection](images/3q.png)
 
-9. **Find the command line** for the flagged process. This is usually the
-   single most valuable field in an investigation — the difference between
-   "PowerShell ran" and "PowerShell ran *this*".
+1. **Click each process in the tree** and look at the details shown for it.
 
-   ![Screenshot: Command line detail](images/ex4-06-command-line.png)
+1. **Find the host details.** Confirm the hostname matches your endpoint, and note the user account the process ran under, the OS, and the timestamp.
 
-10. **Find the host details.** Confirm the hostname matches your endpoint, and
-    note the user account the process ran under, the OS, and the timestamp.
+    ![Screenshot: Host details within the detection](images/3w.png)
 
-    ![Screenshot: Host details within the detection](images/ex4-07-host-details.png)
-
-11. **Find the detection metadata** — severity, the tactic and technique it
-    maps to, and what action the sensor took.
-
-    ![Screenshot: Detection metadata showing tactic and technique](images/ex4-08-tactic-technique.png)
-
-### Task 4: Compare against the others
-
-12. Return to the detections list and briefly open the **High** and then the
-    **Low** detection.
-
-13. Notice how similar they look structurally, despite the different
-    severities.
-
-### Expected result
-
-You can describe, from the console alone, exactly what ran on the endpoint,
-which process launched it, under which user account, and when.
-
-### What just happened
-
-This is the capability that distinguishes EDR — Endpoint Detection and Response
-— from traditional antivirus. Antivirus answers one question: "was this file
-bad, yes or no?" EDR records the full behavioural history so an analyst can
-reconstruct an incident after the fact, including activity that is not
-malicious in isolation.
-
-No single step in a modern attack necessarily looks malicious. A document
-opens. It spawns a script interpreter. The interpreter reaches out to a
-website. The chain is the attack, and the process tree is how you see the chain.
-
-Task 4 is worth dwelling on. Structurally those three alerts look alike, but
-only one deserved your time. Multiply that by a few thousand alerts a day and
-you have the triage problem that TENEX exists to solve.
-
----
-
-## Exercise 5: Respond — contain the host
-
-**Time:** 15 minutes
+## Exercise 5: Respond - contain the host
 
 You have decided the Critical detection is real. The priority now is to stop it
 spreading, immediately, without waiting to finish the investigation.
@@ -479,81 +429,82 @@ you keep full ability to investigate it and to release it later.
 Before containing anything, prove the network path works. Without a working
 baseline, a failed ping later proves nothing.
 
-1. On the **Analyst VM**, click **Start**, type `cmd` and press **Enter** to
-   open a Command Prompt.
+1. On the **Analyst VM**, seach for `cmd`**(1)** and press **Enter** to
+   open a **Command Prompt (2)**.
 
-2. Start a continuous ping to the endpoint's private IP — type `ping -t`
-   followed by a space and this address:
+   ![Screenshot: Continuous ping showing successful replies](images/3e.png)
 
-   <inject key="endpointPrivateIp" enableCopy="true"/>
+1. Start a continuous ping to the endpoint's private IP, type **ping -t <inject key="endpointPrivateIp" enableCopy="true"/>**.
 
-3. Confirm you are getting **Reply from** lines.
+   ![Screenshot: Continuous ping showing successful replies](images/3t.png)
 
-   ![Screenshot: Continuous ping showing successful replies](images/ex5-01-ping-baseline.png)
+1. Confirm you are getting **Reply from** lines.
 
-4. **Leave this window running and visible.** You are going to watch it change
+1. **Leave this window running and visible.** You are going to watch it change
    in real time.
+
+   ![Screenshot: Continuous ping showing successful replies](images/3y.png)
 
 ### Task 2: Contain the host
 
-5. In the Falcon console, go to **Host setup and management → Host management**.
+1. In the Falcon console, click **Host setup and management (1)** and select **Host management (2)**.
 
-6. Find and select your endpoint:
+   ![Screenshot: Left navigation with Host setup and management highlighted](images/1.png)
 
-   <inject key="EndpointHostname" enableCopy="true"/>
+1. Find and select your endpoint: <inject key="EndpointHostname" enableCopy="true"/>
 
-7. Open the host actions dropdown at the top of the host details — it is
-   labelled **Host group assignment** with a chevron next to it.
+1. Click the **More options (1)** menu next to the selected endpoint host, then select **Network contain host (2)** to contain the endpoint..
 
-8. Click **Network contain host**.
+   ![Screenshot: Host actions menu with Network contain host highlighted](images/3r.png)
 
-   ![Screenshot: Host actions menu with Network contain host highlighted](images/ex5-02-network-contain-menu.png)
-
-9. A confirmation dialog appears: *"Are you sure want to network contain this
+1. A confirmation dialog appears: *"Are you sure want to network contain this
    host?"* It explains that containing this host will only allow communication
    with CrowdStrike and will stop communication with your network and the
    internet.
 
-10. Optionally type a note in the **Audit log entry** box, for example
+   ![Screenshot: Host actions menu with Network contain host highlighted](images/3i.png)
+
+1. Optionally type a note in the **Audit log entry** box, for example
     `Lab exercise - containing after critical detection`.
 
-11. Click **Contain**.
+1. Click **Contain**.
 
-    ![Screenshot: Network containment confirmation dialog](images/ex5-03-contain-dialog.png)
+   ![Screenshot: Host actions menu with Network contain host highlighted](images/3u.png)
 
 ### Task 3: Verify containment took effect
 
 Two independent checks:
 
-12. **Watch your ping window.** Within about a minute, the `Reply from` lines
+1. **Watch your ping window.** Within about a minute, the `Reply from` lines
     change to `Request timed out`.
 
-    ![Screenshot: Ping output showing request timed out](images/ex5-04-ping-timeout.png)
+    ![Screenshot: Ping output showing request timed out](images/4q.png)
 
-13. **Check the console.** The host status for your endpoint now reads
+1. **Check the console.** The host status for your endpoint now reads
     **Contained**.
 
-    ![Screenshot: Host management showing Contained status](images/ex5-05-contained-status.png)
+    ![Screenshot: Host management showing Contained status](images/4r.png)
 
-> If you still had a Remote Desktop session open to the Endpoint VM, it has now
-> dropped. That is containment working as designed, not a lab failure.
+   > If you still had a Remote Desktop session open to the Endpoint VM, it has now dropped. That is containment working as designed, not a lab failure.
 
 ### Task 4: Lift containment
 
-14. In the Falcon console, select your endpoint again.
+1. In the Falcon console, select your endpoint again.
 
-15. Open the same host actions dropdown and click **Lift network containment**.
+1. Open the same host actions dropdown and click **Lift network containment**.
 
-    ![Screenshot: Lift network containment menu option](images/ex5-06-lift-containment.png)
+    ![Screenshot: Lift network containment menu option](images/4e.png)
 
-16. Confirm the action.
+1. Confirm the action.
 
-17. Watch the ping window again. Within about a minute, `Reply from` lines
+    ![Screenshot: Lift network containment menu option](images/4t.png)
+
+1. Watch the ping window again. Within about a minute, `Reply from` lines
     return.
 
-    ![Screenshot: Ping replies resuming after lifting containment](images/ex5-07-ping-restored.png)
+    ![Screenshot: Lift network containment menu option](images/4y.png)
 
-18. Press **Ctrl + C** in the Command Prompt to stop the continuous ping.
+1. Press **Ctrl + C** in the Command Prompt to stop the continuous ping.
 
 ### Expected result
 
@@ -562,7 +513,7 @@ then released it and proved connectivity recovered.
 
 ### What just happened
 
-Containment is enforced by the sensor itself, in the kernel on the endpoint —
+Containment is enforced by the sensor itself, in the kernel on the endpoint -
 not by a network device, a firewall rule or a switch port. That is why it works
 identically whether the machine is in a datacentre, in Azure, or on an
 employee's home wifi.
@@ -580,8 +531,6 @@ channel — in seconds, from a browser, without anybody walking to a desk.
 ---
 
 ## Exercise 6: Close the case and reset
-
-**Time:** 5 minutes
 
 An incident is not finished when the threat is stopped. It is finished when the
 record is closed and the environment is back to a known state.
