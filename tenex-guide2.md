@@ -126,24 +126,6 @@ reporting to the Falcon cloud.
 1. Note the **Host ID**. Every machine that installs the sensor generates its
     own, which is how Falcon tells your endpoint apart from everyone else's.
 
-### Expected result
-
-Your endpoint appears in Host management, with a sensor version and a
-recent "last seen" timestamp.
-
-> **If the host is not listed or details are not populated**, wait two or three minutes and refresh. The sensor registers shortly after the VM finishes provisioning.
-
-### What just happened
-
-The Falcon sensor is a lightweight agent running in the Windows kernel on the
-endpoint. It watches every process start, command line, file write and network
-connection, and streams that telemetry continuously to CrowdStrike's cloud.
-
-The host record you just opened is the cloud's view of that machine. Seeing it
-online proves the channel is live in both directions — the endpoint can report
-to CrowdStrike, and CrowdStrike can send instructions back. That second
-direction is what makes Exercise 5 possible.
-
 ---
 
 ## Exercise 2: Connect the TENEX integration
@@ -174,41 +156,10 @@ through its REST API — no agent, nothing installed on your machines.
 1. Navigate to the integrations area and choose to add a new **CrowdStrike
    Falcon** connection.
 
-   ![Screenshot: TENEX integrations page](images/ex2-02-add-integration.png)
-
 1. Paste in the three values from Task 1 and save the connection.
-
-   ![Screenshot: CrowdStrike connection configuration in TENEX](images/ex2-03-connection-config.png)
 
 1. Confirm the connection reports as healthy and that TENEX can see your host,
    <inject key="EndpointHostname" enableCopy="true"/>.
-
-   ![Screenshot: Healthy CrowdStrike connection in TENEX](images/ex2-04-connection-healthy.png)
-
-### Expected result
-
-TENEX shows an active CrowdStrike connection and begins pulling alerts from the
-tenant.
-
-> **Note:** depending on how your session is being run, this exercise may be
-> demonstrated for you rather than performed by you. If so, read the
-> explanation below and move on to Exercise 3 — nothing later in the lab
-> depends on having completed this step yourself.
-
-### What just happened
-
-The client ID and secret are a machine identity. TENEX exchanges them for a
-short-lived access token and then calls the Falcon API with that token.
-
-The permissions attached to that API client decide what TENEX is allowed to do:
-
-- **Alerts: read** — lets it pull detections, which is the data feed it triages
-- **Hosts: read and write** — lets it look up host details and, in Exercise 5,
-  contain a machine without anyone opening the Falcon console
-
-This is the integration pattern behind most modern security tooling: one
-platform holds the sensors and the data, another consumes it through an API and
-acts on it.
 
 ---
 
@@ -303,30 +254,6 @@ any real malware on the machine.
    ![Screenshot: Command prompt showing the expected "not recognized" response](images/1q.png)
 
    ![Screenshot: Command prompt showing the expected "not recognized" response](images/2q.png)
-
-### Expected result
-
-Nothing visible happened on the endpoint for the first three commands, but
-three new detections now exist in the Falcon console - one Critical, one High
-and one Low.
-
-### What just happened
-
-Those three commands are not programs, which is why Windows says it cannot find
-them. Nothing executed. But the sensor saw the **command line**, recognised
-these reserved strings as CrowdStrike's built-in test triggers, and raised a
-detection at the matching severity in the cloud. The entire effect happened
-server-side.
-
-The last PowerShell command is different in kind: that one demonstrates
-*prevention* — Falcon terminating a process rather than merely recording it.
-
-**Why three different severities?** Because that is the problem real security
-teams actually have. A production Falcon console generates far more alerts than
-anyone can read, most of them low priority. Deciding what deserves human
-attention is the hard part, and it is exactly what TENEX is built to do. You
-have just manufactured, in miniature, the pile of mixed-severity noise an
-analyst faces every morning.
 
 ---
 
@@ -468,28 +395,6 @@ Two independent checks:
 
 1. Press **Ctrl + C** in the Command Prompt to stop the continuous ping.
 
-### Expected result
-
-You contained a host, proved by two independent means that it was isolated,
-then released it and proved connectivity recovered.
-
-### What just happened
-
-Containment is enforced by the sensor itself, in the kernel on the endpoint -
-not by a network device, a firewall rule or a switch port. That is why it works
-identically whether the machine is in a datacentre, in Azure, or on an
-employee's home wifi.
-
-The deliberate exception for CrowdStrike cloud traffic is the clever part. The
-machine is isolated from everything that could do harm, but **not** from you.
-You keep investigating it, you keep issuing commands to it, and you release it
-when you are ready. A quarantine you could not reverse remotely would not be
-much use.
-
-In a real incident this single action is what buys the team time: ransomware
-stops spreading laterally, data stops leaving, and the attacker loses their
-channel — in seconds, from a browser, without anybody walking to a desk.
-
 ---
 
 ## Exercise 6: Close the case and reset
@@ -519,23 +424,6 @@ record is closed and the environment is back to a known state.
    ```
 
 1. End your lab session.
-
-### Expected result
-
-No open detections remain for your host, and the host is in a normal,
-uncontained state.
-
-### What just happened
-
-Closing alerts is not administrative tidiness. An alert left open is an alert
-someone else will re-investigate, and a console full of stale alerts is how
-genuine incidents get missed. Status and disposition are what let a team
-measure itself: how many alerts were real, how fast they were handled, what the
-false positive rate looks like.
-
-When you relaunch this lab you will get a brand new endpoint with a brand new
-identity in the Falcon console, and none of today's detections. Every session
-starts clean.
 
 ---
 
