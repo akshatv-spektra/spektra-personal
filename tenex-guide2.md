@@ -540,27 +540,23 @@ record is closed and the environment is back to a known state.
 1. In the Falcon console, go to **Endpoint security → Monitor → Endpoint
    detections**.
 
-2. Filter by **Hostname** using your endpoint:
+1. Filter by **Hostname** using your endpoint: <inject key="EndpointHostname" enableCopy="true"/>
 
-   <inject key="EndpointHostname" enableCopy="true"/>
+1. Select yours detections and click on **Edit Status**.
 
-3. Select all three of your detections using the checkboxes on the left.
+   ![Screenshot: Three detections selected](images/5q.png)
 
-   ![Screenshot: Three detections selected](images/ex6-01-select-detections.png)
+1. Set the status to **Closed** and click on **Update Status**.
 
-4. Set the status to **Closed**.
+   ![Screenshot: Three detections selected](images/5w.png)
 
-   ![Screenshot: Setting detection status to Closed](images/ex6-02-set-closed.png)
-
-5. Add a brief comment, for example:
+1. Add a brief comment, for example:
 
    ```
    Lab test detection - verified benign, no action required.
    ```
 
-6. Confirm the host is no longer showing as Contained in Host management.
-
-7. End your lab session.
+1. End your lab session.
 
 ### Expected result
 
