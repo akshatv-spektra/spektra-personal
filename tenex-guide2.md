@@ -297,8 +297,6 @@ and what actually happened?
 
    ![Screenshot: Process tree for the critical detection](images/3q.png)
 
-1. **Click each process in the tree** and look at the details shown for it.
-
 1. **Find the host details.** Confirm the hostname matches your endpoint, and note the user account the process ran under, the OS, and the timestamp.
 
     ![Screenshot: Host details within the detection](images/3w.png)
