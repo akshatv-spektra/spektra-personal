@@ -316,12 +316,11 @@ you keep full ability to investigate it and to release it later.
 Before containing anything, prove the network path works. Without a working
 baseline, a failed ping later proves nothing.
 
-1. On the **Analyst VM**, seach for `cmd`**(1)** and press **Enter** to
-   open a **Command Prompt (2)**.
+1. On the **Analyst VM**, seach for `cmd`**(1)** and press **Enter** to open a **Command Prompt (2)**.
 
    ![Screenshot: Continuous ping showing successful replies](images/3e.png)
 
-1. Start a continuous ping to the endpoint's private IP, type **ping -t <inject key="endpointPrivateIp" enableCopy="true"/>**.
+1. Start a continuous ping to the endpoint's private IP, type **ping -t <inject key="endpointPrivateIp" enableCopy="false"/>**.
 
    ![Screenshot: Continuous ping showing successful replies](images/3t.png)
 
