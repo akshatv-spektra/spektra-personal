@@ -67,44 +67,6 @@ compromised machine by logging into the compromised machine.
 
 ---
 
-## Before you begin: connect to the Analyst VM
-
-1. On your own computer, press **Windows + R**, type `mstsc` and press
-   **Enter** to open Remote Desktop Connection.
-
-   ![Screenshot: Remote Desktop Connection dialog](images/pre-01-mstsc.png)
-
-2. In the **Computer** field, enter the Analyst VM address:
-
-   <inject key="analystRdpAddress" enableCopy="true"/>
-
-3. Click **Connect**.
-
-4. When prompted for credentials, click **More choices → Use a different
-   account**, then enter:
-
-   - **User name:** <inject key="adminUsername" enableCopy="true"/>
-   - **Password:** <inject key="adminPassword" enableCopy="true"/>
-
-   ![Screenshot: Windows Security credential prompt](images/pre-02-credentials.png)
-
-5. Click **OK**. If you see a certificate warning, click **Yes** to continue.
-
-6. The Analyst VM desktop appears. You should see three items placed there for
-   you:
-
-   - **START-HERE.txt** — a summary of this environment
-   - **Falcon Console** — shortcut to the CrowdStrike console
-   - **TENEX Platform** — shortcut to the TENEX platform
-
-   ![Screenshot: Analyst VM desktop with shortcuts](images/pre-03-analyst-desktop.png)
-
-> **Keep this session open for the whole lab.** It is your workspace. You will
-> open a second, separate connection to the Endpoint VM in Exercise 3 and close
-> it again straight afterwards.
-
----
-
 ## Exercise 1: Confirm the endpoint is protected
 
 You cannot respond to an incident on a machine you are not monitoring. Before
