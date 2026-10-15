@@ -158,7 +158,7 @@ through its REST API — no agent, nothing installed on your machines.
 1. Navigate to the integrations area and choose to add a new **CrowdStrike
    Falcon** connection.
 
-1. Paste in the three values from Task 1 and save the connection.
+1. Paste in the three values from **Task 1** and save the connection.
 
 1. Confirm the connection reports as healthy and that TENEX can see your host,
    <inject key="EndpointHostname" enableCopy="true"/>.
@@ -175,29 +175,9 @@ any real malware on the machine.
 
 ### Task 1: Connect to the Endpoint VM
 
-1. In your Analyst VM, search for **RDP (1)** and open **Remote Desktop Connection (2)** from the results.
+1. In the CloudLabs toolbar at the top, click the **VM dropdown (1)** and select the Endpoint VM : **<inject key="EndpointHostname" enableCopy="false"/> (2)** to switch to its session.
 
-   ![Screenshot: Endpoint VM desktop](images/9.png)
-
-1. Enter the **Endpoint VM’s** IP address, <inject key="endpointPrivateIp" enableCopy="true"/>, in the Computer field, then click **Connect**.
-
-   ![Screenshot: Endpoint VM desktop](images/1a.png)
-
-1. Enter the credentials in the respective fields, then click **OK** to connect:
-
-   - **User name:** <inject key="adminUsername" enableCopy="true"/>
-   - **Password:** <inject key="adminPassword" enableCopy="true"/>
-
-   ![Screenshot: Endpoint VM desktop](images/1b.png)
-
-1. A security certificate warning will appear. Click **Yes** to continue connecting to the Endpoint VM.
-
-   ![Screenshot: Endpoint VM desktop](images/1d.png)
-
-1. On the desktop you will find **Exercise-3-Test-Commands.txt** containing the
-   commands below, in case you prefer to copy them from there.
-
-   ![Screenshot: Endpoint VM desktop](images/1c.png)
+   ![Screenshot: Endpoint VM desktop](images/h1.png)
 
 ### Task 2: Run the test commands
 
@@ -251,11 +231,9 @@ any real malware on the machine.
 
     ![Screenshot: Falcon prevention notification on the endpoint](images/1h.png)
 
-1. Close the Remote Desktop session to the **Endpoint VM**.
+1. Click the **VM dropdown (1**) in the CloudLabs toolbar, then select the Analyst VM **<inject key="AnalystHostname" enableCopy="false"/> (2)** to switch back to the Analyst VM session.
 
-   ![Screenshot: Command prompt showing the expected "not recognized" response](images/1q.png)
-
-   ![Screenshot: Command prompt showing the expected "not recognized" response](images/2q.png)
+   ![Screenshot: Command prompt showing the expected "not recognized" response](images/h2.png)
 
 <question source="https://raw.githubusercontent.com/akshatv-spektra/spektra-personal/refs/heads/main/questions/question-02.md" />
 
