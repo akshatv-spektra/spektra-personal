@@ -1,0 +1,744 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "This template will deploy Windows Server 2025 .",
+    "Parameters": {
+        "CloudLabsDeploymentID": {
+            "Description": "DeploymentID Value",
+            "Type": "String"
+        },
+        "CheckAcknowledgement": {
+            "Type": "String",
+            "Default": "TRUE"
+        },
+        "VPCCIDR": {
+            "Type": "String",
+            "Default": "10.0.0.0/16"
+        },
+        "clgclusterSubnetCidr": {
+            "Type": "String",
+            "Default": "10.0.2.0/24"
+        },
+        "cgWhitelist": {
+            "Type": "String",
+            "Default": "0.0.0.0/0"
+        },
+        "WindowsInstancesSubnetCIDR": {
+            "Type": "String",
+            "Default": "10.0.1.0/24"
+        },
+        "WindowsVMUserName":{
+            "Type": "String",
+            "Default": "labuser"
+        },
+        "WindowsVMPassword": {
+            "Type": "String",
+            "Default": "Password!123"
+        },
+        "trainerUserName": {
+            "Type": "String",
+            "Default": "trainer"
+        },
+        "trainerUserPassword": {
+            "Type": "String",
+            "Default": "Password!234"
+        },
+        "WindowsAMIID": {
+            "Type": "String",
+            "Default": "ami-09639480113b0df96"
+        },
+        "userName": {
+          "Type": "String"
+        },
+       "password": {
+         "Type": "String"
+        },
+        "AppEnabled": {
+            "Type": "String",
+            "Default": "True"
+        },
+        "ShutdownOnIdle": {
+            "Type": "String",
+            "Default": "True"
+        },
+        "ShutdownOnIdleTimeout": {
+            "Type": "Number",
+            "Default": 15
+        },
+        "WarningWaitTimeout": {
+            "Type": "Number",
+            "Default": 15
+        },
+        "TrackingMode": {
+            "Type": "Number",
+            "Default": 1
+        },
+        "ShutdownOnDisconnect": {
+            "Type": "String",
+            "Default": "True"
+        },
+        "ShutdownOnDisconnectTimeout": {
+            "Type": "Number",
+            "Default": 15
+        },
+        "ShutdownWhenNoUsersConnected": {
+            "Type": "String",
+            "Default": "True"
+        },
+        "ShutdownWhenNoUsersConnectedTimeout": {
+            "Type": "Number",
+            "Default": 15
+        },
+        "WindowsIdletrackingInstallationScriptUrl": {
+            "Type": "String",
+            "Default": "WindowsIdletrackingInstallationScriptUrl"
+        },
+        "WindowsIdlecheckFeatureConnectionString": {
+            "Type": "String",
+            "Default": "WindowsIdlecheckFeatureConnectionString"
+        },
+        "OdlTrackingSource": {
+            "Type": "Number",
+            "Default": 3
+        },
+        "Version": {
+            "Type": "String",
+            "Default": "Version"
+        },
+        "AppCheckFrequency": {
+            "Type": "Number",
+            "Default": 2
+        },
+        "CloudLabsDeploymentIDEncrypt": {
+            "Type": "String",
+            "Default": "CloudLabsDeploymentIDEncrypt"
+        },
+        "AccountId": {
+            "Type": "String"
+        },
+        "AmazonECSTaskExecutionRolePolicy": {
+            "Type": "String",
+            "Default": "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+        }
+    },
+    "Mappings": {
+        "AzMap": {
+            "us-east-1": {
+                "azId": "use1-az1"
+            },
+            "ap-south-1": {
+                "azId": "aps1-az1"
+            },
+            "us-east-2": {
+                "azId": "use2-az1"
+            }
+        },
+        "RegionMap": {
+            "us-east-1": {
+                "WindowsAMI": "ami-09639480113b0df96"
+            },
+            "ap-south-1": {
+                "WindowsAMI": "ami-05fdee25803e36cbc"
+            },
+            "us-east-2": {
+                "WindowsAMI": "ami-0ae452a0c234d1923"
+            }
+        }
+    },
+   "Resources": {
+        "TaskExecutionRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "ecs-tasks.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                },
+                "Path": "/",
+                "ManagedPolicyArns": [
+                    {
+                        "Ref": "AmazonECSTaskExecutionRolePolicy"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "TaskExecutionRole-",
+                                    {
+                                        "Ref": "CloudLabsDeploymentID"
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "EC2InstancesVPC": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "CidrBlock": {
+                    "Ref": "VPCCIDR"
+                },
+                "EnableDnsSupport": true,
+                "EnableDnsHostnames": true,
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "EC2InstancesVPC-",
+                                    {
+                                        "Ref": "CloudLabsDeploymentID"
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "clgClusterSubnet": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "MapPublicIpOnLaunch": true,
+                "VpcId": {
+                    "Ref": "EC2InstancesVPC"
+                },
+                "CidrBlock": {
+                    "Ref": "clgclusterSubnetCidr"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "clgClusterSubnet-",
+                                    {
+                                        "Ref": "CloudLabsDeploymentID"
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "WindowsEC2InstanceSubnet": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "MapPublicIpOnLaunch": true,
+                "AvailabilityZoneId": {
+                    "Fn::FindInMap": [
+                        "AzMap",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "azId"
+                    ]
+                },
+                "VpcId": {
+                    "Ref": "EC2InstancesVPC"
+                },
+                "CidrBlock": {
+                    "Ref": "WindowsInstancesSubnetCIDR"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "WindowsEC2InstanceSubnet-",
+                                    {
+                                        "Ref": "CloudLabsDeploymentID"
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "InternetGateway": {
+            "Type": "AWS::EC2::InternetGateway",
+            "Properties": {
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "InternetGateway-",
+                                    {
+                                        "Ref": "CloudLabsDeploymentID"
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "AttachInternetGateway": {
+            "Type": "AWS::EC2::VPCGatewayAttachment",
+            "Properties": {
+                "InternetGatewayId": {
+                    "Ref": "InternetGateway"
+                },
+                "VpcId": {
+                    "Ref": "EC2InstancesVPC"
+                }
+            }
+        },
+        "EC2InstancesVPCpublicRT": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "EC2InstancesVPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "EC2InstancesVPCpublicRT",
+                                    {
+                                        "Ref": "CloudLabsDeploymentID"
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "EC2InstancesVPCRoute": {
+            "Type": "AWS::EC2::Route",
+            "DependsOn": "AttachInternetGateway",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "EC2InstancesVPCpublicRT"
+                },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "GatewayId": {
+                    "Ref": "InternetGateway"
+                }
+            }
+        },
+        "WindowsInstancesVPCRouteattach": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "WindowsEC2InstanceSubnet"
+                },
+                "RouteTableId": {
+                    "Ref": "EC2InstancesVPCpublicRT"
+                }
+            }
+        },
+        "clusterSubnetRouteTableAssociation": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "clgClusterSubnet"
+                },
+                "RouteTableId": {
+                    "Ref": "EC2InstancesVPCpublicRT"
+                }
+            }
+        },
+        "clgSg": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "this is for container",
+                "GroupName": "clgSg",
+                "VpcId": {
+                    "Ref": "EC2InstancesVPC"
+                },
+                "SecurityGroupIngress": [
+                    {
+                        "FromPort": 443,
+                        "ToPort": 443,
+                        "IpProtocol": "tcp",
+                        "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "FromPort": 443,
+                        "ToPort": 443,
+                        "IpProtocol": "tcp",
+                        "CidrIpv6": "::/0"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "clgSg-",
+                                    {
+                                        "Ref": "CloudLabsDeploymentID"
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "EC2InstancesVPCRDP": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "security group that allows RDP and all egress traffic",
+                "VpcId": {
+                    "Ref": "EC2InstancesVPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "EC2InstancesVPCRDP-",
+                                    {
+                                        "Ref": "CloudLabsDeploymentID"
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ],
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "-1",
+                        "FromPort": 3389,
+                        "ToPort": 3389,
+                        "CidrIp": {
+                            "Ref": "cgWhitelist"
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "0",
+                        "ToPort": "65535",
+                        "CidrIp": {
+                            "Ref": "clgclusterSubnetCidr"
+                        }
+                    },
+                    {
+                        "IpProtocol": "-1",
+                        "FromPort": "0",
+                        "ToPort": "65535",
+                        "CidrIp": {
+                            "Ref": "cgWhitelist"
+                        }
+                    }
+                ],
+                "SecurityGroupEgress": [
+                    {
+                        "IpProtocol": "-1",
+                        "FromPort": 0,
+                        "ToPort": 65535,
+                        "CidrIp": {
+                            "Ref": "cgWhitelist"
+                        }
+                    }
+                ]
+            }
+        },
+        "WindowsEC2Instance": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "RegionMap",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "WindowsAMI"
+                    ]
+                },
+                "InstanceType": "t3a.xlarge",
+                "UserData": {
+                    "Fn::Base64": {
+                        "Fn::Join": [
+                            "\n",
+                            [
+                                {
+                                    "Fn::Sub": "<powershell>\nStart-Transcript -Path 'C:\\Windows\\Logs\\userdata-logs.txt' -Append\n$username= \"${WindowsVMUserName}\"\n$password = ConvertTo-SecureString \"${WindowsVMPassword}\" -AsPlainText -Force\nNew-LocalUser -Name $username -Password $password\nAdd-LocalGroupMember -Group \"Administrators\" -Member $username\nStart-Process powershell.exe -ArgumentList \"-NoProfile -ExecutionPolicy Bypass -Command `\"New-Item -Path 'HKLM:\\System\\CurrentControlSet\\Control\\Network' -Name 'NewNetworkWindowOff' -Force`\"\" -Verb RunAs\nStart-Sleep -Seconds 60;\n# Continue with rest of setup\nNew-Item -ItemType directory -Path \"C:\\Scripts\\\"\n$WebClient = New-Object System.Net.WebClient\n$WebClient.DownloadFile(\"https://experienceazure.blob.core.windows.net/templates/cloudlabs-common/cloudlabs-windows-functions.ps1\", \"C:\\Scripts\\cloudlabs-windows-functions.ps1\")\nInvoke-WebRequest -Uri \"https://cloudlabs-prod-templates-s3.s3.amazonaws.com/netskope/instructorlogin.ps1\" -OutFile \"C:\\Scripts\\shadow.ps1\"\nSet-ExecutionPolicy -ExecutionPolicy Unrestricted -Force\n$vmAdminUsername=\"${WindowsVMUserName}\"\n$trainerUserName=\"${trainerUserName}\"\n$trainerUserPassword=\"${trainerUserPassword}\"\nC:\\Scripts\\shadow.ps1 $vmAdminUsername $trainerUserName $trainerUserPassword\n$AdminKey = \"HKLM:\\SOFTWARE\\Microsoft\\Active Setup\\Installed Components\\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}\"\n$UserKey = \"HKLM:\\SOFTWARE\\Microsoft\\Active Setup\\Installed Components\\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}\"\nSet-ItemProperty -Path $AdminKey -Name \"IsInstalled\" -Value 0 -Force -ErrorAction SilentlyContinue -Verbose\nSet-ItemProperty -Path $UserKey -Name \"IsInstalled\" -Value 0 -Force -ErrorAction SilentlyContinue -Verbose\nWrite-Host \"IE Enhanced Security Configuration (ESC) has been disabled.\" -ForegroundColor Green -Verbose\n\n$HKLM = \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\3\"\n$HKCU = \"HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\3\"\nSet-ItemProperty -Path $HKLM -Name \"1803\" -Value 0 -ErrorAction SilentlyContinue -Verbose\nSet-ItemProperty -Path $HKCU -Name \"1803\" -Value 0 -ErrorAction SilentlyContinue -Verbose\nSet-ItemProperty -Path $HKLM -Name \"1604\" -Value 0 -ErrorAction SilentlyContinue -Verbose\nSet-ItemProperty -Path $HKCU -Name \"1604\" -Value 0 -ErrorAction SilentlyContinue -Verbose\nStop-Transcript"
+                                },
+                                {
+                                    "Fn::If": [
+                                        "AppEnabledAndOdlTrackingCondition",
+                                        {
+                                            "Fn::Join": [
+                                                "\n",
+                                                [
+                                                    {
+                                                        "Fn::Sub": "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;"
+                                                    },
+                                                    {
+                                                        "Fn::Sub": "Invoke-WebRequest ${WindowsIdletrackingInstallationScriptUrl} -OutFile 'C:/WindowsIdleTrackingInstallationScripts.ps1'"
+                                                    },
+                                                    {
+                                                        "Fn::Sub": "$Token = (Invoke-WebRequest -Method PUT -Uri \"http://169.254.169.254/latest/api/token\" -Headers @{\"X-aws-ec2-metadata-token-ttl-seconds\" = \"21600\"} -UseBasicParsing).Content\n$InstanceID = (Invoke-WebRequest -Uri \"http://169.254.169.254/latest/meta-data/instance-id\" -Headers @{\"X-aws-ec2-metadata-token\" = $Token} -UseBasicParsing).Content"
+                                                    },
+                                                    {
+                                                        "Fn::Sub": "C:\\WindowsIdleTrackingInstallationScripts.ps1 ${WindowsIdlecheckFeatureConnectionString} ${Version} ${AppEnabled} ${ShutdownOnIdle} ${ShutdownOnIdleTimeout} ${WarningWaitTimeout} ${TrackingMode} ${ShutdownOnDisconnect} ${ShutdownOnDisconnectTimeout} ${ShutdownWhenNoUsersConnected} ${ShutdownWhenNoUsersConnectedTimeout} ${AppCheckFrequency} $InstanceID ${CloudLabsDeploymentIDEncrypt}"
+                                                    },
+                                                    {
+                                                        "Fn::Sub": "Remove-Item 'C:/WindowsIdleTrackingInstallationScripts.ps1' -Force"
+                                                    }
+                                                ]
+                                            ]
+                                        },
+                                        {
+                                            "Fn::Sub": "echo 'App Enabled is False'"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": "</powershell>"
+                                }
+                            ]
+                        ]
+                    }
+                },
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "Encrypted": false,
+                            "DeleteOnTermination": true,
+                            "VolumeSize": 50,
+                            "VolumeType": "gp3"
+                        }
+                    }
+                ],
+                "NetworkInterfaces": [
+                    {
+                        "AssociatePublicIpAddress": true,
+                        "DeviceIndex": 0,
+                        "GroupSet": [
+                            {
+                                "Ref": "EC2InstancesVPCRDP"
+                            }
+                        ],
+                        "SubnetId": {
+                            "Ref": "WindowsEC2InstanceSubnet"
+                        }
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "WindowsVM-",
+                                    {
+                                        "Ref": "CloudLabsDeploymentID"
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "Conditions": {
+        "AppEnabledAndOdlTrackingCondition": {
+            "Fn::And": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "AppEnabled"
+                        },
+                        "True"
+                    ]
+                },
+                {
+                    "Fn::Or": [
+                        {
+                            "Fn::Equals": [
+                                {
+                                    "Ref": "OdlTrackingSource"
+                                },
+                                1
+                            ]
+                        },
+                        {
+                            "Fn::Equals": [
+                                {
+                                    "Ref": "OdlTrackingSource"
+                                },
+                                2
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "Outputs": {
+        "CloudLabsDeploymentID": {
+            "Description": "DeploymentID Value",
+            "Value": {
+                "Ref": "CloudLabsDeploymentID"
+            }
+        },
+        "SignInUrl": {
+           "Description": "Sign in URL",
+           "Value": {
+             "Fn::Join": ["", ["https://", { "Ref": "AccountId" }, ".signin.aws.amazon.com/console/"]]
+           }
+       },
+        "VpcId": {
+            "Description": "The ID of the VPC",
+            "Value": {
+                "Ref": "EC2InstancesVPC"
+            }
+        },
+        "UserName": {
+            "Description": "UserName",
+            "Value": {
+                "Ref": "userName"
+            }
+        },
+        "Password": {
+            "Description": "Password",
+            "Value": {
+                "Ref": "password"
+            }
+        },
+        "EC2InstanceName": {
+        "Description": "EC2 Name",
+        "Value": { 
+            "Fn::Join": [
+                "", 
+                ["odl-user-", 
+                { 
+                    "Ref": "CloudLabsDeploymentID" 
+                }
+             ]
+          ] 
+        }
+    },
+       "S3BucketName": {
+         "Description": "S3 Bucket Name",
+         "Value": {
+              "Fn::Join": [
+                  "",
+                   ["odl-user-",
+                    { 
+                        "Ref": "CloudLabsDeploymentID" 
+                   }
+                ]
+            ]
+         }
+    },
+       "KeyName": {
+         "Description": "Key Name",
+         "Value": { 
+             "Fn::Join": [
+                 "",
+                  ["odl-user-",
+                   { 
+                       "Ref": "CloudLabsDeploymentID"
+                    }
+                ]
+            ] 
+        }
+    },
+    "WindowsVMUserName": {
+            "Description": "WindowsVMUserName",
+            "Value": {
+                "Ref": "WindowsVMUserName"
+            }
+        },
+        "WindowsVMPassword": {
+            "Description": "WindowsVMPassword",
+            "Value": {
+                "Ref": "WindowsVMPassword"
+            }
+        },
+        "WindowsVMPublicIp": {
+            "Description": "Public Ip of the Windows VM",
+            "Value": {
+                "Fn::GetAtt": [
+                    "WindowsEC2Instance",
+                    "PublicIp"
+                ]
+            }
+        },
+        "WindowsVMPrivateIp": {
+            "Description": "Private Ip of the Windows VM",
+            "Value": {
+                "Fn::GetAtt": [
+                    "WindowsEC2Instance",
+                    "PrivateIp"
+                ]
+            }
+        },
+        "SubnetId": {
+            "Description": "The ID of the ClusterSubnet",
+            "Value": {
+                "Ref": "clgClusterSubnet"
+            }
+        },
+        "trainerUserName": {
+            "Description": "trainer userName",
+            "Value": {
+                "Ref": "trainerUserName"
+            }
+        },
+        "trainerUserPassword": {
+            "Description": "trainer userPassword",
+            "Value": {
+                "Ref": "trainerUserPassword"
+            }
+        },
+        "SecurityGroupId": {
+            "Description": "The SG ID of the Cluster",
+            "Value": {
+                "Ref": "clgSg"
+            }
+        },
+        "TaskExecutionRole": {
+            "Description": "The Arn of Role that is utilised by ECS Task Definition",
+            "Value": {
+                "Fn::GetAtt": [
+                    "TaskExecutionRole",
+                    "Arn"
+                ]
+            }
+        }
+    }
+}
