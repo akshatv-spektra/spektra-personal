@@ -1,0 +1,82 @@
+{
+    "$schema": "",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "CloudLabsDeploymentID": {
+            "value": "GET-DEPLOYMENT-ID"
+        },
+        "AmazonECSTaskExecutionRolePolicy": {
+            "value": "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+        },
+        "CheckAcknowledgement": {
+            "value": "TRUE"
+        },
+        "VPCCIDR": {
+            "value": "10.0.0.0/16"
+        },
+        "WindowsInstancesSubnetCIDR": {
+            "value": "10.0.1.0/24"
+        },
+        "clgclusterSubnetCidr": {
+            "value": "10.0.2.0/24"
+        },
+        "cgWhitelist": {
+            "value": "0.0.0.0/0"
+        },
+        "WindowsVMUserName": {
+            "value": "labuser"
+        },
+        "WindowsVMPassword": {
+            "value": "GEN-PASSWORD"
+        },
+        "AccountId": {
+                "value": "GET-TENANT-FQDN"
+        },
+        "CloudLabsDeploymentIDEncrypt": {
+            "value": "GET-DEPLOYMENT-ID-ENCRYPT"
+        },
+        "AppEnabled": {
+            "value": "GET-ODL-ENABLE-ATTENDEE-TRACKING"
+        },
+        "ShutdownOnIdle":{
+           "value":"GET-ODL-ENABLE-SHUTDOWNONIDLE"
+        },
+        "WarningWaitTimeout":{
+           "value":"GET-ODL-SHUTDOWNONIDLE-WARNINGWAITTIMEOUT"
+        },
+        "TrackingMode":{
+           "value":"GET-ODL-SHUTDOWNONIDLE-TRACKINGMODE"
+        },
+        "ShutdownOnDisconnect":{
+            "value":"GET-ODL-ENABLE-SHUTDOWNONDISCONNECT"
+         },
+         "ShutdownWhenNoUsersConnected":{
+            "value":"GET-ODL-ENABLE-SHUTDOWNWHENNOUSERSCONNECTED"
+         },
+         "ShutdownOnIdleTimeout":{
+            "value":"GET-ODL-SHUTDOWNONIDLE-TIMEOUT"
+         },
+         "ShutdownOnDisconnectTimeout":{
+            "value":"GET-ODL-SHUTDOWNONDISCONNECT-TIMEOUT"
+         },
+         "ShutdownWhenNoUsersConnectedTimeout":{
+            "value":"GET-ODL-SHUTDOWNWHENNOUSERSCONNECTED-TIMEOUT"
+         },
+        "WindowsIdletrackingInstallationScriptUrl": {
+            "value": "AWS-WINDOWS-IDLETRACKING-INSTALLATION-SCRIPT-URL"
+        },
+        "WindowsIdlecheckFeatureConnectionString": {
+            "value": "WINDOWS-IDLECHECK-FEATURE-CONNECTION-STRING"
+        },
+        "OdlTrackingSource": {
+            "value": "GET-ODL-TRACKING-SOURCE"
+        },
+         "Version": {
+            "value": "GET-IDLE-TRACKING-VERSION"
+        },
+        "AppCheckFrequency": {
+            "value": 2
+        }
+    
+    }
+}
